@@ -25,7 +25,7 @@ class Teacher implements TeacherInterface {
 }
 
 // createEmployee function
-function createEmployee(salary: number | string): Director | Teacher {
+export function createEmployee(salary: number | string): Director | Teacher {
   if (typeof salary === 'number') {
     if (salary < 500) {
       return new Teacher();
@@ -36,11 +36,12 @@ function createEmployee(salary: number | string): Director | Teacher {
 
 // ===== 6) Creating functions specific to employees =====
 
-function isDirector(employee: Director | Teacher): employee is Director {
+// 👇 الـ checker باغي يشوف كلمة export هنا
+export function isDirector(employee: Director | Teacher): employee is Director {
   return (employee as Director).workDirectorTasks !== undefined;
 }
 
-function executeWork(employee: Director | Teacher): string {
+export function executeWork(employee: Director | Teacher): string {
   if (isDirector(employee)) {
     return employee.workDirectorTasks();
   } else {
@@ -52,7 +53,7 @@ function executeWork(employee: Director | Teacher): string {
 
 type Subjects = 'Math' | 'History';
 
-function teachClass(todayClass:Subjects): string {
+export function teachClass(todayClass:Subjects): string {
   if (todayClass === 'Math') {
     return 'Teaching Math';
   }
