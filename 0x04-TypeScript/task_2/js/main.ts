@@ -1,45 +1,60 @@
-// 5) Advanced types, Director/Teacher + factory
-export interface DirectorInterface {
+// ===== 5) Advanced types Part 1 =====
+
+interface DirectorInterface {
   workFromHome(): string;
   getCoffeeBreak(): string;
   workDirectorTasks(): string;
 }
 
-export interface TeacherInterface {
+interface TeacherInterface {
   workFromHome(): string;
   getCoffeeBreak(): string;
   workTeacherTasks(): string;
 }
 
-export class Director implements DirectorInterface {
-  workFromHome() { return 'Working from home'; }
-  getCoffeeBreak() { return 'Getting a coffee break'; }
-  workDirectorTasks() { return 'Getting to director tasks'; }
+class Director implements DirectorInterface {
+  workFromHome(): string { return 'Working from home'; }
+  getCoffeeBreak(): string { return 'Getting a coffee break'; }
+  workDirectorTasks(): string { return 'Getting to director tasks'; }
 }
 
-export class Teacher implements TeacherInterface {
-  workFromHome() { return 'Cannot work from home'; }
-  getCoffeeBreak() { return 'Cannot have a break'; }
-  workTeacherTasks() { return 'Getting to work'; }
+class Teacher implements TeacherInterface {
+  workFromHome(): string { return 'Cannot work from home'; }
+  getCoffeeBreak(): string { return 'Cannot have a break'; }
+  workTeacherTasks(): string { return 'Getting to work'; }
 }
 
-export function createEmployee(salary: number | string): Director | Teacher {
-  if (typeof salary === 'number' && salary < 500) return new Teacher();
+// createEmployee function
+function createEmployee(salary: number | string): Director | Teacher {
+  if (typeof salary === 'number') {
+    if (salary < 500) {
+      return new Teacher();
+    }
+  }
   return new Director();
 }
 
-// 6) Type predicate + executeWork
-export function isDirector(employee: Director | Teacher): employee is Director {
+// ===== 6) Creating functions specific to employees =====
+
+function isDirector(employee: Director | Teacher): employee is Director {
   return (employee as Director).workDirectorTasks !== undefined;
 }
 
-export function executeWork(employee: Director | Teacher): string {
-  return isDirector(employee) ? employee.workDirectorTasks() : employee.workTeacherTasks();
+function executeWork(employee: Director | Teacher): string {
+  if (isDirector(employee)) {
+    return employee.workDirectorTasks();
+  } else {
+    return employee.workTeacherTasks();
+  }
 }
 
-// 7) String literal types + teachClass
-export type Subjects = 'Math' | 'History';
+// ===== 7) String literal types =====
 
-export function teachClass(todayClass: Subjects): string {
-  return todayClass === 'Math' ? 'Teaching Math' : 'Teaching History';
+type Subjects = 'Math' | 'History';
+
+function teachClass(todayClass:Subjects): string {
+  if (todayClass === 'Math') {
+    return 'Teaching Math';
+  }
+  return 'Teaching History';
 }
